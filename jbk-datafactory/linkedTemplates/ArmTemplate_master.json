@@ -1,0 +1,63 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "jbk-datafactory"
+		},
+		"jbkaccount2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'jbkaccount2'"
+		},
+		"jbkworkspace_datapool_PoolActivityLog_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'jbkworkspace_datapool_PoolActivityLog'"
+		},
+		"jbkaccount2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://jbkaccount2.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "jbk-datafactory_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"jbkaccount2_accountKey": {
+						"value": "[parameters('jbkaccount2_accountKey')]"
+					},
+					"jbkworkspace_datapool_PoolActivityLog_connectionString": {
+						"value": "[parameters('jbkworkspace_datapool_PoolActivityLog_connectionString')]"
+					},
+					"jbkaccount2_properties_typeProperties_url": {
+						"value": "[parameters('jbkaccount2_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
